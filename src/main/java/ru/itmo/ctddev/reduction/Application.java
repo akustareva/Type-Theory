@@ -42,10 +42,11 @@ public class Application implements Lambda {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         if (func instanceof Abstraction) {
-            builder.append("(").append(func.toString()).append(")");
+            builder.append("(").append(func).append(")");
         } else {
             builder.append(func.toString());
         }
+        builder.append(" ");
         if (arg instanceof Variable) {
             builder.append(arg);
         } else {

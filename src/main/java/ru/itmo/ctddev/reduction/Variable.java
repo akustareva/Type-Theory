@@ -4,7 +4,7 @@ public class Variable implements Lambda {
     private String var;
 
     public Variable(String var) {
-        this.var = var;
+        this.var = removeLeadingSpaces(var);
     }
 
     @Override

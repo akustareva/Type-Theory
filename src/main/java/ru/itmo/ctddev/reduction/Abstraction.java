@@ -5,7 +5,7 @@ public class Abstraction implements Lambda {
     private Lambda lambda;
 
     public Abstraction(String var, Lambda lambda) {
-        this.var = var;
+        this.var = removeLeadingSpaces(var);
         this.lambda = lambda;
     }
 

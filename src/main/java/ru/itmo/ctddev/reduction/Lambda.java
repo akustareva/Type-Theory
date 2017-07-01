@@ -5,4 +5,7 @@ public interface Lambda {
     default Lambda reduce() {
         return null;
     }
+    default String removeLeadingSpaces(String str) {
+        return str.substring(str.lastIndexOf(' ') + 1);
+    }
 }
