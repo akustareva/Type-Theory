@@ -6,6 +6,10 @@ public interface Lambda {
         return null;
     }
     default String removeLeadingSpaces(String str) {
-        return str.substring(str.lastIndexOf(' ') + 1);
+        int pos = 0;
+        while(str.charAt(pos) == ' ' || str.charAt(pos) ==  '\t' || str.charAt(pos) == '\r' || str.charAt(pos) == '\n') {
+            pos++;
+        }
+        return str.substring(pos);
     }
 }

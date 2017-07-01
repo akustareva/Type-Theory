@@ -10,17 +10,20 @@ import ru.itmo.ctddev.reduction.Lambda;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Main {
     private static String INPUT_FILE_EXTENSION = ".in";
+    private static String OUTPUT_FILE_EXTENSION = ".out";
 
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
             System.err.println("Please, specify the filename without extension. For example, \'task1\'.");
             return;
         }
-        String fileName = args[0] + INPUT_FILE_EXTENSION;
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        String inputFileName = args[0] + INPUT_FILE_EXTENSION;
+        String outputFileName = args[0] + OUTPUT_FILE_EXTENSION;
+        BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
         StringBuilder expression = new StringBuilder();
         String line = reader.readLine();
         while (line != null) {
@@ -38,6 +41,8 @@ public class Main {
             lambda = reduced;
             reduced = lambda.reduce();
         }
-        System.out.println(lambda);
+        PrintWriter writer = new PrintWriter(outputFileName, "UTF-8");
+        writer.print(lambda);
+        writer.close();
     }
 }
