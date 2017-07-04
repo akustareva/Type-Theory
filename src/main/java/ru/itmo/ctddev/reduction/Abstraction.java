@@ -11,8 +11,17 @@ public class Abstraction implements Lambda {
 
     @Override
     public Lambda substitute(String substVar, Lambda substLambda) {
-        if (var.endsWith(substVar)) {
+        if (var.equals(substVar)) {
             return this;
+        }
+        if (substLambda instanceof Variable) {
+            if (((Variable) substLambda).getVar().equals(var)) {
+                String oldVarName = var;
+                do {
+                    var += "\'";
+                } while (Variable.isVariableNameExists(var));
+                lambda = lambda.substitute(oldVarName, new Variable(var));
+            }
         }
         return new Abstraction(var, lambda.substitute(substVar, substLambda));
     }
