@@ -1,12 +1,23 @@
 package ru.itmo.ctddev.reduction;
 
+import java.util.*;
+
 public class Application implements Lambda {
     private Lambda func;
     private Lambda arg;
+    private Set<String> includedVars;
 
     public Application(Lambda func, Lambda arg) {
         this.func = func;
         this.arg = arg;
+        this.includedVars = new HashSet<>();
+        includedVars.addAll(func.getIncludedVarsNames());
+        includedVars.addAll(arg.getIncludedVarsNames());
+    }
+
+    @Override
+    public Set<String> getIncludedVarsNames() {
+        return Collections.unmodifiableSet(includedVars);
     }
 
     @Override

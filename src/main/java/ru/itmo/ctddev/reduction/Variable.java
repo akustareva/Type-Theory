@@ -1,16 +1,20 @@
 package ru.itmo.ctddev.reduction;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Variable implements Lambda {
-    private static Set<String> allExpressionVariablesNames = new HashSet<>();
+    private static Set<String> wholeExpressionVariablesNames = new HashSet<>();
     private String var;
 
     public Variable(String var) {
         var = removeLeadingSpaces(var);
         this.var = var;
-        allExpressionVariablesNames.add(var);
+        wholeExpressionVariablesNames.add(var);
+    }
+
+    @Override
+    public Set<String> getIncludedVarsNames() {
+        return Collections.singleton(var);
     }
 
     @Override
@@ -25,8 +29,8 @@ public class Variable implements Lambda {
         return var;
     }
 
-    public static boolean isVariableNameExists(String name) {
-        return allExpressionVariablesNames.contains(name);
+    public static boolean isVariableNameExist(String name) {
+        return wholeExpressionVariablesNames.contains(name);
     }
 
     @Override

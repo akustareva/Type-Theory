@@ -19,7 +19,7 @@ expression returns [Lambda lambda]
     ;
 
 application returns [Lambda lambda]
-    : app=application atom                        { $lambda = new Application($app.lambda, $atom.lambda); }
+    : app=application atom                              { $lambda = new Application($app.lambda, $atom.lambda); }
     | atom                                              { $lambda = $atom.lambda; }
     ;
 

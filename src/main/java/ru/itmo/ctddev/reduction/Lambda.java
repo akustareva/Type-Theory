@@ -1,6 +1,10 @@
 package ru.itmo.ctddev.reduction;
 
+import java.util.List;
+import java.util.Set;
+
 public interface Lambda {
+    Set<String> getIncludedVarsNames();
     Lambda substitute(String substVar, Lambda substLambda);
     default Lambda reduce() {
         return null;
