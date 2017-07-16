@@ -1,6 +1,5 @@
-package ru.itmo.ctddev.reduction;
+package ru.itmo.ctddev.entities;
 
-import java.util.List;
 import java.util.Set;
 
 public interface Lambda {

@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import ru.itmo.ctddev.antlr.LambdaLexer;
 import ru.itmo.ctddev.antlr.LambdaParser;
-import ru.itmo.ctddev.reduction.Lambda;
+import ru.itmo.ctddev.entities.Lambda;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,14 +15,24 @@ import java.io.PrintWriter;
 public class Main {
     private static String INPUT_FILE_EXTENSION = ".in";
     private static String OUTPUT_FILE_EXTENSION = ".out";
+    private static String NORMALIZE = "normalize";
+    private static String TYPE = "infer type";
 
     public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            System.err.println("Please, specify the filename without extension. For example, \'task1\'.");
+        if (args.length != 2) {
+            System.err.println(getHelpMessage());
             return;
         }
-        String inputFileName = args[0] + INPUT_FILE_EXTENSION;
-        String outputFileName = args[0] + OUTPUT_FILE_EXTENSION;
+        String fileName;
+        String inputFileName;
+        if (args[1].contains(".")) {
+            fileName = args[1].substring(0, args[1].indexOf("."));
+            inputFileName = args[1];
+        } else {
+            fileName = args[1];
+            inputFileName = fileName + INPUT_FILE_EXTENSION;
+        }
+        String outputFileName = fileName + OUTPUT_FILE_EXTENSION;
         BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
         StringBuilder expression = new StringBuilder();
         String line = reader.readLine();
@@ -36,13 +46,37 @@ public class Main {
         LambdaParser parser = new LambdaParser(tokens);
         LambdaParser.ExpressionContext expressionContext = parser.expression();
         Lambda lambda = expressionContext.lambda;
-        Lambda reduced = lambda.reduce();
-        while (reduced != null) {
-            lambda = reduced;
-            reduced = lambda.reduce();
-        }
         PrintWriter writer = new PrintWriter(outputFileName, "UTF-8");
-        writer.print(lambda);
+        if (NORMALIZE.equalsIgnoreCase(args[0])) {
+            Lambda reduced = lambda.reduce();
+            while (reduced != null) {
+                lambda = reduced;
+                reduced = lambda.reduce();
+            }
+            writer.print(lambda);
+        } else if (TYPE.equalsIgnoreCase(args[0])) {
+
+        } else {
+            System.err.println(getHelpMessage("Unexpected operation."));
+        }
         writer.close();
+    }
+
+    private static String getHelpMessage(String prefix) {
+        if (!prefix.equals("") && !prefix.endsWith("\n")) {
+            prefix += "\n";
+        }
+        return prefix +
+            "Usage: java -jar Type-Theory-1.0-SNAPSHOT.jar <operation> <filename>\n" +
+            "Please, specify the operation and input filename.\n" +
+            "Available operations:\n\t" +
+                "* " + NORMALIZE + "    for normalization of lambda (if it has normal form)\n\t" +
+                "* " + TYPE +       "   for type inference (in simply typed lambda calculus)\n" +
+            "You can specify filename without extension then we will use \'.in\' by default. For example, " +
+            "if you specify \'task1\' then we will read input from file \'task1.in\'.";
+    }
+
+    private static String getHelpMessage() {
+        return getHelpMessage("");
     }
 }

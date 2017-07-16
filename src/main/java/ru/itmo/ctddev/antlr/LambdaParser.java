@@ -1,19 +1,18 @@
 // Generated from C:/Users/Anna/IdeaProjects/Type-Theory/src/main/java/ru/itmo/ctddev/antlr\Lambda.g4 by ANTLR 4.7
 package ru.itmo.ctddev.antlr;
 
-    import ru.itmo.ctddev.reduction.Lambda;
-    import ru.itmo.ctddev.reduction.Abstraction;
-    import ru.itmo.ctddev.reduction.Application;
-    import ru.itmo.ctddev.reduction.Variable;
-
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import ru.itmo.ctddev.entities.Abstraction;
+import ru.itmo.ctddev.entities.Application;
+import ru.itmo.ctddev.entities.Lambda;
+import ru.itmo.ctddev.entities.Variable;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LambdaParser extends Parser {

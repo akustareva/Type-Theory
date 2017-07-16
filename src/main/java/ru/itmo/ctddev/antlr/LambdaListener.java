@@ -1,10 +1,10 @@
 // Generated from C:/Users/Anna/IdeaProjects/Type-Theory/src/main/java/ru/itmo/ctddev/antlr\Lambda.g4 by ANTLR 4.7
 package ru.itmo.ctddev.antlr;
 
-    import ru.itmo.ctddev.reduction.Lambda;
-    import ru.itmo.ctddev.reduction.Abstraction;
-    import ru.itmo.ctddev.reduction.Application;
-    import ru.itmo.ctddev.reduction.Variable;
+import ru.itmo.ctddev.entities.Lambda;
+import ru.itmo.ctddev.entities.Abstraction;
+import ru.itmo.ctddev.entities.Application;
+import ru.itmo.ctddev.entities.Variable;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 

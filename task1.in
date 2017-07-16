@@ -1,1 +1,1 @@
-(\x.\z.x z \y.x y z) y
+(\f.\x.f (f x)) (\f.\x.f (f x))

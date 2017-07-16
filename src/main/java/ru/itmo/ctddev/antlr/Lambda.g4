@@ -1,10 +1,10 @@
 grammar Lambda;
 
-@header {
-    import ru.itmo.ctddev.reduction.Lambda;
-    import ru.itmo.ctddev.reduction.Abstraction;
-    import ru.itmo.ctddev.reduction.Application;
-    import ru.itmo.ctddev.reduction.Variable;
+@parser::header {
+import ru.itmo.ctddev.entities.Lambda;
+import ru.itmo.ctddev.entities.Abstraction;
+import ru.itmo.ctddev.entities.Application;
+import ru.itmo.ctddev.entities.Variable;
 }
 
 expression returns [Lambda lambda]
