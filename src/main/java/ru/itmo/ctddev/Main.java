@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import ru.itmo.ctddev.antlr.LambdaLexer;
 import ru.itmo.ctddev.antlr.LambdaParser;
 import ru.itmo.ctddev.entities.Lambda;
+import ru.itmo.ctddev.entities.Type;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +17,7 @@ public class Main {
     private static String INPUT_FILE_EXTENSION = ".in";
     private static String OUTPUT_FILE_EXTENSION = ".out";
     private static String NORMALIZE = "normalize";
-    private static String TYPE = "infer type";
+    private static String TYPE = "infer_type";
 
     public static void main(String[] args) throws IOException {
         if (args.length != 2) {
@@ -55,7 +56,13 @@ public class Main {
             }
             writer.print(lambda);
         } else if (TYPE.equalsIgnoreCase(args[0])) {
-
+            TypeResolver resolver = new TypeResolver(lambda);
+            Type type = resolver.resolve();
+            if (type != null) {
+                // TODO: println type & context
+            } else {
+                writer.println("Лямбда-выражение не имеет типа.");
+            }
         } else {
             System.err.println(getHelpMessage("Unexpected operation."));
         }

@@ -37,4 +37,14 @@ public class Variable implements Lambda {
     public String toString() {
         return var;
     }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return !(o == null || !(o instanceof Variable)) && this.hashCode() == o.hashCode();
+    }
 }
