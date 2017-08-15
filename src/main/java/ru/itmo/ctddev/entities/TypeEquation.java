@@ -29,6 +29,6 @@ public class TypeEquation {
 
     @Override
     public boolean equals(Object o) {
-        return !(o == null || !(o instanceof Variable)) && this.hashCode() == o.hashCode();
+        return !(o == null || !(o instanceof TypeEquation)) && this.hashCode() == o.hashCode();
     }
 }

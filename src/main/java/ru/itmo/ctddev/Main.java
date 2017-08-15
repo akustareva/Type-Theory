@@ -7,11 +7,13 @@ import ru.itmo.ctddev.antlr.LambdaLexer;
 import ru.itmo.ctddev.antlr.LambdaParser;
 import ru.itmo.ctddev.entities.Lambda;
 import ru.itmo.ctddev.entities.Type;
+import ru.itmo.ctddev.entities.Variable;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 public class Main {
     private static String INPUT_FILE_EXTENSION = ".in";
@@ -59,7 +61,11 @@ public class Main {
             TypeResolver resolver = new TypeResolver(lambda);
             Type type = resolver.resolve();
             if (type != null) {
-                // TODO: println type & context
+                writer.println(type);
+                Map<Variable, Type> resolvedTypes = resolver.getResolvedTypes();
+                for (Map.Entry<Variable, Type> entry : resolvedTypes.entrySet()) {
+                    writer.println(entry.getKey() + ": " + entry.getValue());
+                }
             } else {
                 writer.println("Лямбда-выражение не имеет типа.");
             }

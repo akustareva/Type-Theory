@@ -43,4 +43,14 @@ public class TypeFunction implements Type {
         }
         return builder.toString();
     }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return !(o == null || !(o instanceof TypeFunction)) && this.hashCode() == o.hashCode();
+    }
 }

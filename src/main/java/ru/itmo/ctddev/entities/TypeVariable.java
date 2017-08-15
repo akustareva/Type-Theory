@@ -28,4 +28,14 @@ public class TypeVariable implements Type {
     public String toString() {
         return "\'" + typeName;
     }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return !(o == null || !(o instanceof TypeVariable)) && this.hashCode() == o.hashCode();
+    }
 }

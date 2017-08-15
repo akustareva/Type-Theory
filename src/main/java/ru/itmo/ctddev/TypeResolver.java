@@ -19,8 +19,23 @@ public class TypeResolver {
 
     public Type resolve() {
         Type lambdaType = inferType(mainLambda);
+        boolean isSolvable = solveEquationsSystem();
+        if (!isSolvable) {
+            return null;
+        } else {
+            for (Map.Entry<String, Type> entry : typeByName.entrySet()) {
+                lambdaType = lambdaType.substitute(entry.getKey(), entry.getValue());
+            }
+            return lambdaType;
+        }
+    }
 
-        return null;
+    public Map<Variable, Type> getResolvedTypes() {
+        Map<Variable, Type> resolvedTypes = new HashMap<>();
+        for (Map.Entry<Variable, String> entry : variableTypeName.entrySet()) {
+            resolvedTypes.put(entry.getKey(), typeByName.get(entry.getValue()));
+        }
+        return resolvedTypes;
     }
 
     private Type inferType(Lambda lambda) {
@@ -40,6 +55,74 @@ public class TypeResolver {
             return newTypeVar;
         }
         throw new IllegalStateException("Error in inferType(): unknown type of lambda");
+    }
+
+    private boolean solveEquationsSystem() {
+        boolean wasModified = true;
+        while (wasModified) {
+            wasModified = false;
+            for (TypeEquation equation : equations) {
+                if (!(equation.getLeft() instanceof TypeVariable) && equation.getRight() instanceof TypeVariable) {
+                    equations.remove(equation);
+                    equations.add(new TypeEquation(equation.getRight(), equation.getLeft()));
+                    wasModified = true;
+                    break;
+                }
+            }
+            for (TypeEquation equation : equations) {
+                if (equation.getLeft().equals(equation.getRight())) {
+                    equations.remove(equation);
+                    wasModified = true;
+                    break;
+                }
+            }
+            for (TypeEquation equation : equations) {
+                if (equation.getLeft() instanceof TypeFunction && equation.getRight() instanceof TypeFunction) {
+                    equations.remove(equation);
+                    equations.add(new TypeEquation(((TypeFunction) equation.getLeft()).getLeft(),
+                            ((TypeFunction) equation.getRight()).getLeft()));
+                    equations.add(new TypeEquation(((TypeFunction) equation.getLeft()).getRight(),
+                            ((TypeFunction) equation.getRight()).getRight()));
+                    wasModified = true;
+                    break;
+                }
+            }
+            for (TypeEquation equation : equations) {
+                if (equation.getLeft() instanceof TypeVariable) {
+                    if (equation.getRight().contains(((TypeVariable) equation.getLeft()).getTypeName())) {
+                        return false;
+                    }
+                    String typeNameForChecking = ((TypeVariable) equation.getLeft()).getTypeName();
+                    Set<TypeEquation> equationsForRemoving = new HashSet<>();
+                    Set<TypeEquation> equationsForAdding = new HashSet<>();
+                    for (TypeEquation equationForChecking : equations) {
+                        if (equation.equals(equationForChecking)) {
+                            continue;
+                        }
+                        if (equationForChecking.getLeft().contains(typeNameForChecking) ||
+                                equationForChecking.getRight().contains(typeNameForChecking)) {
+                            equationsForRemoving.add(equationForChecking);
+                            equationsForAdding.add(new TypeEquation(equationForChecking.getLeft().substitute(typeNameForChecking, equation.getRight()),
+                                    equationForChecking.getRight().substitute(typeNameForChecking, equation.getRight())));
+                            wasModified = true;
+                        }
+                    }
+                    equations.removeAll(equationsForRemoving);
+                    equations.addAll(equationsForAdding);
+                    if (wasModified) {
+                        break;
+                    }
+                }
+            }
+        }
+        for (TypeEquation equation : equations) {
+            if (equation.getLeft() instanceof TypeVariable) {
+                typeByName.put(((TypeVariable) equation.getLeft()).getTypeName(), equation.getRight());
+            } else {
+                throw new IllegalStateException("Unexpected result after completion of solveEquationsSystem() method.");
+            }
+        }
+        return true;
     }
 
     private Type getTypeForVariable(Variable variable) {
