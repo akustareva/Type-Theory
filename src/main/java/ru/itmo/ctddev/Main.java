@@ -59,6 +59,7 @@ public class Main {
             writer.print(lambda);
         } else if (TYPE.equalsIgnoreCase(args[0])) {
             TypeResolver resolver = new TypeResolver(lambda);
+            resolver.useEquivalence();
             Type type = resolver.resolve();
             if (type != null) {
                 writer.println(type);
@@ -86,7 +87,7 @@ public class Main {
                 "* " + NORMALIZE + "    for normalization of lambda (if it has normal form)\n\t" +
                 "* " + TYPE +       "   for type inference (in simply typed lambda calculus)\n" +
             "You can specify filename without extension then we will use \'.in\' by default. For example, " +
-            "if you specify \'task1\' then we will read input from file \'task1.in\'.";
+            "if you specify \'task\' then we will read input from file \'task.in\'.";
     }
 
     private static String getHelpMessage() {

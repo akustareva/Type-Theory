@@ -33,6 +33,14 @@ public class Variable implements Lambda {
         return wholeExpressionVariablesNames.contains(name);
     }
 
+    public static String getNewVarName(String oldName) {
+        StringBuilder newName = new StringBuilder(oldName);
+        do {
+            newName.append("\'");
+        } while (Variable.isVariableNameExist(newName.toString()));
+        return newName.toString();
+    }
+
     @Override
     public String toString() {
         return var;

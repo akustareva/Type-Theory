@@ -151,4 +151,28 @@ public class TypeResolver {
             return "t" + id++;
         }
     }
+
+    public void useEquivalence() {
+        mainLambda = useEquivalence(mainLambda, new HashSet<>());
+        System.out.println("Expression was changed on alpha-equivalent: " + mainLambda);
+    }
+
+    private Lambda useEquivalence(Lambda lambda, Set<String> boundVars) {
+        if (lambda instanceof Abstraction) {
+            String boundVar = ((Abstraction) lambda).getVar();
+            if (boundVars.contains(boundVar)) {
+                String oldVarName = boundVar;
+                String newVarName = Variable.getNewVarName(oldVarName);
+                lambda = new Abstraction(newVarName, ((Abstraction) lambda).getLambda().substitute(oldVarName, new Variable(newVarName)));
+                boundVar = newVarName;
+            }
+            boundVars.add(boundVar);
+            return new Abstraction(((Abstraction) lambda).getVar(), useEquivalence(((Abstraction) lambda).getLambda(), boundVars));
+        } else if (lambda instanceof Application) {
+            Lambda func = useEquivalence(((Application) lambda).getFunc(), boundVars);
+            Lambda arg = useEquivalence(((Application) lambda).getArg(), boundVars);
+            return new Application(func, arg);
+        }
+        return lambda;
+    }
 }

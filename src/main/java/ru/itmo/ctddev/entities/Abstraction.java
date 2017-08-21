@@ -27,7 +27,7 @@ public class Abstraction implements Lambda {
         }
         if (substLambda.getIncludedVarsNames().contains(var)) {
             String oldVarName = var;
-            var = getNewVarName(var);
+            var = Variable.getNewVarName(var);
             lambda = lambda.substitute(oldVarName, new Variable(var));
         }
         return new Abstraction(var, lambda.substitute(substVar, substLambda));
@@ -48,14 +48,6 @@ public class Abstraction implements Lambda {
 
     public Lambda getLambda() {
         return lambda;
-    }
-
-    private String getNewVarName(String oldName) {
-        StringBuilder newName = new StringBuilder(oldName);
-        do {
-            newName.append("\'");
-        } while (Variable.isVariableNameExist(newName.toString()));
-        return newName.toString();
     }
 
     @Override
